@@ -73,6 +73,20 @@ namespace ReMux2
 
         public bool IsContainerSelectorEnabled { get => _isContainerSelectorEnabled; set => SetProperty(ref _isContainerSelectorEnabled, value); }
 
+        private bool _isFfmpegAvailable;
+        public bool IsFfmpegAvailable
+        {
+            get => _isFfmpegAvailable;
+            set
+            {
+                if (SetProperty(ref _isFfmpegAvailable, value))
+                {
+                    OnPropertyChanged(nameof(IsFfmpegNotAvailable));
+                }
+            }
+        }
+        public bool IsFfmpegNotAvailable => !IsFfmpegAvailable;
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)

@@ -6,188 +6,232 @@
         xmlns:local="clr-namespace:ReMux2"
         mc:Ignorable="d"
         Title="ReMux2"
-        Height="600" Width="800"
+        Height="650" Width="900"
         Loaded="MainWindow_Loaded"
         Closing="MainWindow_Closing">
 
-    <Window.Resources>
-        <!-- Revert: remove custom styles to restore default WPF look -->
-        <SolidColorBrush x:Key="BackgroundBrush" Color="White"/>
-        <SolidColorBrush x:Key="ForegroundBrush" Color="Black"/>
-        <SolidColorBrush x:Key="BorderBrush" Color="#FFCCCCCC"/>
-    </Window.Resources>
-
-    <Grid Background="{StaticResource BackgroundBrush}">
+    <!-- Colours come from App.xaml -->
+    <Grid Background="{StaticResource PanelBrush}" Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <Border Grid.Row="0" Background="#FF333333" Padding="10">
-            <StackPanel>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+        <!-- HEADER BAR -->
+        <Border Background="{StaticResource PanelBrush}" CornerRadius="6" Padding="10" Margin="0,0,0,16">
+            <UniformGrid Columns="6">
+                <StackPanel Margin="4">
+                    <TextBlock Text="Mode" Foreground="{StaticResource SecondaryForegroundBrush}" />
+                    <ComboBox x:Name="ModeSelector" SelectedIndex="{Binding ModeSelectedIndex, Mode=TwoWay}"
+                              SelectionChanged="ModeSelector_SelectionChanged">
+                        <ComboBoxItem Content="Extract Audio"/>
+                        <ComboBoxItem Content="Remux Audio"/>
+                        <ComboBoxItem Content="YouTube Optimize"/>
+                        <ComboBoxItem Content="Yify Reencode"/>
+                        <ComboBoxItem Content="Custom Encode"/>
+                    </ComboBox>
+                </StackPanel>
 
-                    <StackPanel Grid.Column="0" Margin="5">
-                        <Label Content="Mode" Foreground="White"/>
-                        <ComboBox x:Name="ModeSelector" SelectedIndex="{Binding ModeSelectedIndex, Mode=TwoWay}" SelectionChanged="ModeSelector_SelectionChanged">
-                            <ComboBoxItem Content="Extract Audio"/>
-                            <ComboBoxItem Content="Remux Audio"/>
-                            <ComboBoxItem Content="YouTube Optimize"/>
-                            <ComboBoxItem Content="Yify Reencode"/>
-                            <ComboBoxItem Content="Custom Encode"/>
-                        </ComboBox>
-                    </StackPanel>
+                <StackPanel Margin="4">
+                    <TextBlock Text="Preset" Foreground="{StaticResource SecondaryForegroundBrush}" />
+                    <ComboBox x:Name="PresetSelector" SelectedIndex="{Binding PresetSelectedIndex, Mode=TwoWay}">
+                        <ComboBoxItem Content="ultrafast"/>
+                        <ComboBoxItem Content="superfast"/>
+                        <ComboBoxItem Content="veryfast"/>
+                        <ComboBoxItem Content="faster"/>
+                        <ComboBoxItem Content="fast"/>
+                        <ComboBoxItem Content="medium"/>
+                        <ComboBoxItem Content="slow"/>
+                        <ComboBoxItem Content="slower"/>
+                        <ComboBoxItem Content="veryslow"/>
+                    </ComboBox>
+                </StackPanel>
 
-                    <StackPanel Grid.Column="1" Margin="5">
-                        <Label Content="Preset" Foreground="White"/>
-                        <ComboBox x:Name="PresetSelector" SelectedIndex="{Binding PresetSelectedIndex, Mode=TwoWay}">
-                            <ComboBoxItem Content="ultrafast"/>
-                            <ComboBoxItem Content="superfast"/>
-                            <ComboBoxItem Content="veryfast"/>
-                            <ComboBoxItem Content="faster"/>
-                            <ComboBoxItem Content="fast"/>
-                            <ComboBoxItem Content="medium"/>
-                            <ComboBoxItem Content="slow"/>
-                            <ComboBoxItem Content="slower"/>
-                            <ComboBoxItem Content="veryslow"/>
-                        </ComboBox>
-                    </StackPanel>
+                <StackPanel Margin="4">
+                    <TextBlock Text="Encoder" Foreground="{StaticResource SecondaryForegroundBrush}" />
+                    <ComboBox x:Name="EncoderSelector"
+                              SelectedIndex="{Binding EncoderSelectedIndex, Mode=TwoWay}"
+                              SelectionChanged="EncoderSelector_SelectionChanged">
+                        <ComboBoxItem Content="Auto"/>
+                        <ComboBoxItem Content="libx264"/>
+                        <ComboBoxItem Content="libx265"/>
+                        <ComboBoxItem Content="h264_nvenc"/>
+                        <ComboBoxItem Content="hevc_nvenc"/>
+                        <ComboBoxItem Content="h264_amf"/>
+                        <ComboBoxItem Content="hevc_amf"/>
+                        <ComboBoxItem Content="h264_qsv"/>
+                        <ComboBoxItem Content="hevc_qsv"/>
+                    </ComboBox>
+                </StackPanel>
 
-                    <StackPanel Grid.Column="2" Margin="5">
-                        <Label Content="Encoder" Foreground="White"/>
-                        <ComboBox x:Name="EncoderSelector" SelectionChanged="EncoderSelector_SelectionChanged" SelectedIndex="{Binding EncoderSelectedIndex, Mode=TwoWay}">
-                            <ComboBoxItem Content="Auto"/>
-                            <ComboBoxItem Content="libx264"/>
-                            <ComboBoxItem Content="libx265"/>
-                            <ComboBoxItem Content="h264_nvenc"/>
-                            <ComboBoxItem Content="hevc_nvenc"/>
-                            <ComboBoxItem Content="h264_amf"/>
-                            <ComboBoxItem Content="hevc_amf"/>
-                            <ComboBoxItem Content="h264_qsv"/>
-                            <ComboBoxItem Content="hevc_qsv"/>
-                        </ComboBox>
-                    </StackPanel>
+                <StackPanel Margin="4">
+                    <TextBlock Text="Container" Foreground="{StaticResource SecondaryForegroundBrush}" />
+                    <ComboBox x:Name="ContainerSelector" SelectedIndex="{Binding ContainerSelectedIndex, Mode=TwoWay}">
+                        <ComboBoxItem Content="mkv"/>
+                        <ComboBoxItem Content="mp4"/>
+                    </ComboBox>
+                </StackPanel>
 
-                    <StackPanel Grid.Column="3" Margin="5">
-                        <Label Content="Container" Foreground="White"/>
-                        <ComboBox x:Name="ContainerSelector" SelectedIndex="{Binding ContainerSelectedIndex, Mode=TwoWay}">
-                            <ComboBoxItem Content="mkv"/>
-                            <ComboBoxItem Content="mp4"/>
-                        </ComboBox>
-                    </StackPanel>
+                <StackPanel Margin="4">
+                    <TextBlock Text="Priority" Foreground="{StaticResource SecondaryForegroundBrush}" />
+                    <ComboBox x:Name="PrioritySelector"
+                              SelectedIndex="{Binding PrioritySelectedIndex, Mode=TwoWay}"
+                              SelectionChanged="PrioritySelector_SelectionChanged">
+                        <ComboBoxItem Content="Idle"/>
+                        <ComboBoxItem Content="BelowNormal"/>
+                        <ComboBoxItem Content="Normal"/>
+                        <ComboBoxItem Content="AboveNormal"/>
+                        <ComboBoxItem Content="High"/>
+                    </ComboBox>
+                </StackPanel>
 
-                    <StackPanel Grid.Column="4" Margin="5">
-                        <Label Content="Priority" Foreground="White"/>
-                        <ComboBox x:Name="PrioritySelector" SelectedIndex="{Binding PrioritySelectedIndex, Mode=TwoWay}" SelectionChanged="PrioritySelector_SelectionChanged">
-                            <ComboBoxItem Content="Idle"/>
-                            <ComboBoxItem Content="BelowNormal"/>
-                            <ComboBoxItem Content="Normal"/>
-                            <ComboBoxItem Content="AboveNormal"/>
-                            <ComboBoxItem Content="High"/>
-                        </ComboBox>
-                    </StackPanel>
-
-                    <StackPanel Grid.Column="5" Margin="5">
-                        <Label x:Name="AudioCodecTextBlock" Content="Audio Codec" Foreground="White"/>
-                        <ComboBox x:Name="AudioCodecSelector" SelectedIndex="{Binding AudioCodecSelectedIndex, Mode=TwoWay}">
-                            <ComboBoxItem Content="aac"/>
-                            <ComboBoxItem Content="mp3"/>
-                            <ComboBoxItem Content="wav"/>
-                            <ComboBoxItem Content="flac"/>
-                        </ComboBox>
-                    </StackPanel>
-                </Grid>
-            </StackPanel>
+                <StackPanel Margin="4">
+                    <TextBlock x:Name="AudioCodecTextBlock" Text="Audio Codec" Foreground="{StaticResource SecondaryForegroundBrush}" />
+                    <ComboBox x:Name="AudioCodecSelector"
+                              SelectedIndex="{Binding AudioCodecSelectedIndex, Mode=TwoWay}">
+                        <ComboBoxItem Content="aac"/>
+                        <ComboBoxItem Content="mp3"/>
+                        <ComboBoxItem Content="wav"/>
+                        <ComboBoxItem Content="flac"/>
+                    </ComboBox>
+                </StackPanel>
+            </UniformGrid>
         </Border>
 
-        <!-- Main Content -->
-        <Grid Grid.Row="1" Margin="10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
+        <!-- MAIN BODY -->
+        <StackPanel Grid.Row="1">
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-                <!-- Video Input -->
-                <Border Grid.Row="0" AllowDrop="True" Background="#F0F0F0" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="4" DragEnter="Input_DragEnter" DragLeave="Input_DragLeave" Drop="VideoPath_Drop">
-                    <Grid AllowDrop="True" DragEnter="Input_DragEnter" DragLeave="Input_DragLeave" Drop="VideoPath_Drop">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Content="Video Input (Drag &amp; Drop)" Grid.Column="0"/>
-                        <TextBox x:Name="VideoInput" Grid.Column="1" IsReadOnly="True" Text="{Binding VideoPath, Mode=TwoWay}" AllowDrop="True"/>
-                        <Button Content="..." Grid.Column="2" Click="SelectVideo_Click"/>
-                    </Grid>
-                </Border>
+                <!-- VIDEO -->
+                <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                    <TextBlock Text="VIDEO INPUT" FontWeight="Bold"
+                               Foreground="{StaticResource SecondaryForegroundBrush}"
+                               Margin="0,0,0,6"/>
+                    <Border Background="{StaticResource PanelBrush}"
+                            BorderBrush="{StaticResource BorderBrush}"
+                            BorderThickness="0.5"
+                            CornerRadius="8"
+                            Height="120"
+                            AllowDrop="True"
+                            DragEnter="Input_DragEnter"
+                            DragLeave="Input_DragLeave"
+                            Drop="VideoPath_Drop">
+                        <Grid>
+                            <TextBlock Text="Drop your video here or click below to load manually"
+                                       Foreground="{StaticResource SecondaryForegroundBrush}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       TextAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                    <Button Content="Load Video"
+                            Margin="0,8,0,24"
+                            Click="SelectVideo_Click"/>
+                </StackPanel>
 
-                <!-- Audio Input -->
-                <Border Grid.Row="1" AllowDrop="True" Background="#F0F0F0" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="4" DragEnter="Input_DragEnter" DragLeave="Input_DragLeave" Drop="AudioPath_Drop">
-                    <Grid AllowDrop="True" DragEnter="Input_DragEnter" DragLeave="Input_DragLeave" Drop="AudioPath_Drop">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Content="Audio Input (Drag &amp; Drop)" Grid.Column="0"/>
-                        <TextBox x:Name="AudioInput" Grid.Column="1" IsReadOnly="True" Text="{Binding AudioPath, Mode=TwoWay}" AllowDrop="True"/>
-                        <Button Content="..." Grid.Column="2" Click="SelectAudio_Click"/>
-                    </Grid>
-                </Border>
-
-                <!-- FFmpeg Location -->
-                <Grid Grid.Row="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Content="FFmpeg Location" Grid.Column="0"/>
-                    <TextBox x:Name="FfmpegLocation" Grid.Column="1" IsReadOnly="True" Text="{Binding FfmpegPath, Mode=TwoWay}"/>
-                    <Button Content="..." Grid.Column="2" Click="SelectFfmpeg_Click"/>
-                </Grid>
-
-                <!-- Log Output -->
-                <TextBox x:Name="LogOutput" Grid.Row="3" IsReadOnly="True" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" Margin="5,10,5,5" TextChanged="LogOutput_TextChanged" Text="{Binding LogText, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <!-- AUDIO -->
+                <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                    <TextBlock Text="AUDIO INPUT" FontWeight="Bold"
+                               Foreground="{StaticResource SecondaryForegroundBrush}"
+                               Margin="0,0,0,6"/>
+                    <Border Background="{StaticResource PanelBrush}"
+                            BorderBrush="{StaticResource BorderBrush}"
+                            BorderThickness="0.5"
+                            CornerRadius="8"
+                            Height="120"
+                            AllowDrop="True"
+                            DragEnter="Input_DragEnter"
+                            DragLeave="Input_DragLeave"
+                            Drop="AudioPath_Drop">
+                        <Grid>
+                            <TextBlock Text="Drop your audio here or click below to load manually"
+                                       Foreground="{StaticResource SecondaryForegroundBrush}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       TextAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                    <Button Content="Load Audio"
+                            Margin="0,8,0,24"
+                            Click="SelectAudio_Click"/>
+                </StackPanel>
             </Grid>
-        </Grid>
 
-        <!-- Footer -->
-        <Grid Grid.Row="2" Margin="10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+            <!-- FFMPEG -->
+            <TextBlock Text="FFMPEG LOCATION" FontWeight="Bold"
+                       Foreground="{StaticResource SecondaryForegroundBrush}"
+                       Margin="0,0,0,6"/>
+            <Button Content="Set FFMPEG"
+                    Margin="0,8,0,24"
+                    Click="SelectFfmpeg_Click"
+                    IsEnabled="{Binding IsFfmpegNotAvailable}"/>
 
-            <ProgressBar x:Name="ProgressBar" Value="{Binding Progress, Mode=OneWay}" Margin="0,0,10,0"/>
+            <!-- LOG OUTPUT -->
+            <TextBox x:Name="LogOutput"
+                     Background="#121212"
+                     Foreground="#DADADA"
+                     FontFamily="Consolas"
+                     BorderBrush="{StaticResource BorderBrush}"
+                     BorderThickness="1"
+                     Height="160"
+                     TextWrapping="Wrap"
+                     VerticalScrollBarVisibility="Auto"
+                     Margin="0,8,0,0"
+                     IsReadOnly="True"
+                     Text="{Binding LogText, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                     TextChanged="LogOutput_TextChanged"/>
+        </StackPanel>
 
-            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <Button Content="Start" Click="StartButton_Click" IsEnabled="{Binding IsNotEncoding}"/>
-                <Button Content="Stop" Click="StopButton_Click" IsEnabled="{Binding IsEncoding}"/>
-                <Button x:Name="PauseResumeButton" Content="Pause" Click="PauseResumeButton_Click" IsEnabled="{Binding IsEncoding}"/>
-                <TextBlock Text="{Binding Eta, StringFormat=ETA: {0}}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+        <!-- FOOTER -->
+        <DockPanel Grid.Row="2" Margin="0,16,0,0">
+            <ProgressBar x:Name="ProgressBar"
+                         DockPanel.Dock="Top"
+                         Height="4"
+                         Foreground="{StaticResource AccentBrush}"
+                         Value="{Binding Progress, Mode=OneWay}"/>
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Left"
+                        Margin="0,8,0,0">
+                <Button Content="Start"
+                        Width="100"
+                        Margin="0,0,8,0"
+                        Click="StartButton_Click"
+                        IsEnabled="{Binding IsNotEncoding}"/>
+                <Button Content="Stop"
+                        Width="100"
+                        Margin="0,0,8,0"
+                        Click="StopButton_Click"
+                        IsEnabled="{Binding IsEncoding}"/>
+                <Button x:Name="PauseResumeButton"
+                        Content="Pause"
+                        Width="100"
+                        Click="PauseResumeButton_Click"
+                        IsEnabled="{Binding IsEncoding}"/>
             </StackPanel>
-        </Grid>
-        <!-- Help Popup -->
-        <Popup x:Name="HelpPopup" IsOpen="False" Placement="Mouse" AllowsTransparency="True">
-            <Border Background="#FF2d2d2d" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Padding="10" CornerRadius="3">
+
+            <TextBlock Text="{Binding Eta, StringFormat=ETA: {0}}"
+                       Foreground="{StaticResource SecondaryForegroundBrush}"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"
+                       Margin="0,8,0,0"/>
+        </DockPanel>
+
+        <!-- HELP POPUP -->
+        <Popup x:Name="HelpPopup"
+               IsOpen="False"
+               Placement="Mouse"
+               AllowsTransparency="True">
+            <Border Background="{StaticResource PanelBrush}"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="1"
+                    Padding="10"
+                    CornerRadius="8">
                 <TextBlock Text="Drag and drop video/audio files, select encoder and options, then click Start."
                            Foreground="{StaticResource ForegroundBrush}"/>
             </Border>

@@ -1,11 +1,20 @@
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System;
-using System.Windows.Forms;
 using System.Windows.Media;
+using Microsoft.Win32;
+
+// Resolve type ambiguities explicitly for WPF
+using Brush = System.Windows.Media.Brush;
+using DragEventArgs = System.Windows.DragEventArgs;
+using DragDropEffects = System.Windows.DragDropEffects;
+using DataFormats = System.Windows.DataFormats;
+using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
+using MessageBox = System.Windows.MessageBox;
+using Color = System.Windows.Media.Color;
 
 namespace ReMux2
 {
@@ -73,7 +82,6 @@ namespace ReMux2
         {
             try
             {
-                // Load settings
                 _viewModel.VideoPath = AppServices.Settings.Get("VideoInputPath", string.Empty);
                 _viewModel.AudioPath = AppServices.Settings.Get("AudioInputPath", string.Empty);
                 _viewModel.ModeSelectedIndex = AppServices.Settings.Get("Mode", 0);
@@ -81,12 +89,12 @@ namespace ReMux2
                 _viewModel.EncoderSelectedIndex = AppServices.Settings.Get("Encoder", 0);
                 _viewModel.ContainerSelectedIndex = AppServices.Settings.Get("Container", 0);
                 _viewModel.PrioritySelectedIndex = AppServices.Settings.Get("Priority", 0);
+                _viewModel.FfmpegPath = AppServices.Settings.Get("FFmpegPath", string.Empty);
 
                 var ffmpegPath = _ffmpegService.ResolveFfmpegPath(_viewModel.FfmpegPath);
-                if (!string.IsNullOrEmpty(ffmpegPath))
-                {
-                    await _ffmpegService.EnsureEncoderProbe(ffmpegPath, Log);
-                }
+                _viewModel.IsFfmpegAvailable = !string.IsNullOrEmpty(ffmpegPath);
+                if (_viewModel.IsFfmpegAvailable)
+                    await _ffmpegService.EnsureEncoderProbe(ffmpegPath!, Log);
 
                 UpdateUiForMode((OperationMode)_viewModel.ModeSelectedIndex);
             }
@@ -100,7 +108,8 @@ namespace ReMux2
         {
             if (_viewModel.IsEncoding)
             {
-                MessageBoxResult result = System.Windows.MessageBox.Show("Encoding is in progress. Are you sure you want to exit?", "Confirm Exit", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                MessageBoxResult result = MessageBox.Show("Encoding is in progress. Are you sure you want to exit?", "Confirm Exit",
+                    MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.No)
                 {
                     e.Cancel = true;
@@ -154,6 +163,7 @@ namespace ReMux2
                     outputPath = _ffmpegService.GetAudioOutputPath(_viewModel.VideoPath, audioCodec);
                     (arguments, _) = _ffmpegService.BuildExtractAudioArgs(_viewModel.VideoPath, outputPath, audioCodec);
                     break;
+
                 case OperationMode.RemuxAudio:
                     if (string.IsNullOrEmpty(_viewModel.AudioPath) || !File.Exists(_viewModel.AudioPath))
                     {
@@ -163,23 +173,18 @@ namespace ReMux2
                     outputPath = _ffmpegService.GetOutputPath(_viewModel.VideoPath, (ContainerOption)_viewModel.ContainerSelectedIndex);
                     arguments = _ffmpegService.BuildRemuxArgs(_viewModel.VideoPath, _viewModel.AudioPath, outputPath);
                     break;
+
                 case OperationMode.YouTubeOptimize:
                 case OperationMode.YifyReencode:
                 case OperationMode.CustomEncode:
                     outputPath = _ffmpegService.GetOutputPath(_viewModel.VideoPath, (ContainerOption)_viewModel.ContainerSelectedIndex);
-                    EncodePreset preset;
-                    if (operationMode == OperationMode.CustomEncode)
-                    {
-                        preset = (EncodePreset)_viewModel.PresetSelectedIndex;
-                    }
-                    else
-                    {
-                        preset = EncodePreset.Medium; // Default preset for non-custom modes
-                    }
+                    EncodePreset preset = operationMode == OperationMode.CustomEncode
+                        ? (EncodePreset)_viewModel.PresetSelectedIndex
+                        : EncodePreset.Medium;
 
                     arguments = _ffmpegService.BuildEncodingArgs(
                         _viewModel.VideoPath,
-                        _viewModel.AudioPath, // Can be null
+                        _viewModel.AudioPath,
                         outputPath,
                         (VideoEncoderOption)_viewModel.EncoderSelectedIndex,
                         preset,
@@ -187,6 +192,7 @@ namespace ReMux2
                         operationMode == OperationMode.YifyReencode
                     );
                     break;
+
                 default:
                     Log("Invalid operation mode selected.");
                     return;
@@ -207,7 +213,8 @@ namespace ReMux2
                 return;
             }
 
-            var priority = (ProcessPriorityClass)Enum.Parse(typeof(ProcessPriorityClass), (PrioritySelector.SelectedItem as ComboBoxItem)?.Content as string ?? "Normal", true);
+            var priority = (ProcessPriorityClass)Enum.Parse(typeof(ProcessPriorityClass),
+                (PrioritySelector.SelectedItem as ComboBoxItem)?.Content as string ?? "Normal", true);
 
             _ffmpegService.StartProcess(ffmpegPath, arguments, duration, priority);
         }
@@ -237,7 +244,7 @@ namespace ReMux2
 
         private async void SetFfmpegButton_Click(object sender, RoutedEventArgs e)
         {
-            var openFileDialog = new Microsoft.Win32.OpenFileDialog
+            var openFileDialog = new OpenFileDialog
             {
                 Filter = "FFmpeg Executable|ffmpeg.exe",
                 Title = "Select FFmpeg Executable"
@@ -260,113 +267,95 @@ namespace ReMux2
 
         private void SelectVideo_Click(object sender, RoutedEventArgs e)
         {
-            var openFileDialog = new Microsoft.Win32.OpenFileDialog
+            var openFileDialog = new OpenFileDialog
             {
                 Filter = "Video Files|*.mkv;*.mp4;*.avi;*.mov;*.wmv;*.flv;*.webm|All Files|*.*",
                 Title = "Select a Video File"
             };
             if (openFileDialog.ShowDialog() == true)
-            {
                 _viewModel.VideoPath = openFileDialog.FileName;
-            }
         }
 
         private void SelectAudio_Click(object sender, RoutedEventArgs e)
         {
-            var openFileDialog = new Microsoft.Win32.OpenFileDialog
+            var openFileDialog = new OpenFileDialog
             {
                 Filter = "Audio Files|*.m4a;*.mp3;*.aac;*.wav;*.flac;*.ogg|All Files|*.*",
                 Title = "Select an Audio File"
             };
             if (openFileDialog.ShowDialog() == true)
-            {
                 _viewModel.AudioPath = openFileDialog.FileName;
+        }
+
+        // ----------- DRAG & DROP SUPPORT -------------
+        private Brush GetBrush(string key, Brush fallback)
+        {
+            return TryFindResource(key) as Brush ?? fallback;
+        }
+
+        private void Input_DragEnter(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effects = DragDropEffects.None;
+                return;
+            }
+
+            e.Effects = DragDropEffects.Copy;
+            if (sender is Border border)
+            {
+                border.BorderBrush = GetBrush("AccentBrush", new SolidColorBrush(Colors.DeepSkyBlue));
+                border.BorderThickness = new Thickness(2);
+                border.Background = GetBrush("PanelBrush", new SolidColorBrush(Color.FromRgb(37, 37, 38))); // #252526
             }
         }
 
-
-
-        private void VideoPath_Drop(object sender, System.Windows.DragEventArgs e)
+        private void Input_DragLeave(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(System.Windows.DataFormats.FileDrop))
+            if (sender is Border border)
             {
-                string[] files = (string[])e.Data.GetData(System.Windows.DataFormats.FileDrop);
+                border.BorderBrush = GetBrush("BorderBrush", new SolidColorBrush(Color.FromRgb(60, 60, 60)));
+                border.BorderThickness = new Thickness(1);
+                border.Background = GetBrush("PanelBrush", new SolidColorBrush(Color.FromRgb(37, 37, 38)));
+            }
+        }
+
+        private void VideoPath_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
                 if (files.Length > 0)
-                {
                     _viewModel.VideoPath = files[0];
-                }
             }
-            if (sender is Border border)
-            {
-                border.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(240, 240, 240));
-            }
+            Input_DragLeave(sender, e);
         }
 
-        private void BrowseVideo_Click(object sender, RoutedEventArgs e)
+        private void AudioPath_Drop(object sender, DragEventArgs e)
         {
-            var openFileDialog = new System.Windows.Forms.OpenFileDialog
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                Filter = "Video Files|*.mkv;*.mp4;*.avi;*.mov;*.wmv;*.flv;*.webm|All Files|*.*",
-                Title = "Select a Video File"
-            };
-            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                _viewModel.VideoPath = openFileDialog.FileName;
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                if (files.Length > 0)
+                    _viewModel.AudioPath = files[0];
             }
+            Input_DragLeave(sender, e);
         }
 
-        private void BrowseAudio_Click(object sender, RoutedEventArgs e)
+        private void FfmpegPath_Drop(object sender, DragEventArgs e)
         {
-            var openFileDialog = new System.Windows.Forms.OpenFileDialog
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                Filter = "Audio Files|*.m4a;*.mp3;*.aac;*.wav;*.flac;*.ogg|All Files|*.*",
-                Title = "Select an Audio File"
-            };
-            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                _viewModel.AudioPath = openFileDialog.FileName;
-            }
-        }
-
-        private void Input_DragEnter(object sender, System.Windows.DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(System.Windows.DataFormats.FileDrop))
-            {
-                e.Effects = System.Windows.DragDropEffects.Copy;
-                if (sender is Border border)
-                {
-                    border.Background = new SolidColorBrush(System.Windows.Media.Colors.LightGray);
-                }
-            }
-            else
-            {
-                e.Effects = System.Windows.DragDropEffects.None;
-            }
-        }
-
-        private void Input_DragLeave(object sender, System.Windows.DragEventArgs e)
-        {
-            if (sender is Border border)
-            {
-                border.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(240, 240, 240));
-            }
-        }
-
-        private void AudioPath_Drop(object sender, System.Windows.DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(System.Windows.DataFormats.FileDrop))
-            {
-                string[] files = (string[])e.Data.GetData(System.Windows.DataFormats.FileDrop);
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
                 if (files.Length > 0)
                 {
-                    _viewModel.AudioPath = files[0];
+                    var path = files[0];
+                    _viewModel.FfmpegPath = path;
                 }
             }
-            if (sender is Border border)
-            {
-                border.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(240, 240, 240));
-            }
+            Input_DragLeave(sender, e);
         }
+        // ---------------------------------------------
 
         private void ModeSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -392,7 +381,8 @@ namespace ReMux2
         {
             if (_viewModel.IsEncoding)
             {
-                var priority = (ProcessPriorityClass)Enum.Parse(typeof(ProcessPriorityClass), (PrioritySelector.SelectedItem as ComboBoxItem)?.Content as string ?? "Normal", true);
+                var priority = (ProcessPriorityClass)Enum.Parse(typeof(ProcessPriorityClass),
+                    (PrioritySelector.SelectedItem as ComboBoxItem)?.Content as string ?? "Normal", true);
                 _ffmpegService.UpdatePriority(priority);
             }
         }
@@ -419,7 +409,6 @@ namespace ReMux2
             var h264Encoder = _ffmpegService.DetermineBestHardwareEncoder("h264");
             var hevcEncoder = _ffmpegService.DetermineBestHardwareEncoder("hevc");
 
-            // Assuming EncoderSelector is a ComboBox
             var autoItem = EncoderSelector.Items[0] as ComboBoxItem;
             var libx264Item = EncoderSelector.Items[1] as ComboBoxItem;
             var libx265Item = EncoderSelector.Items[2] as ComboBoxItem;
@@ -458,7 +447,6 @@ namespace ReMux2
                 if (hevc_qsv != null) hevc_qsv.IsEnabled = false;
             }
 
-            // Select best available encoder
             if (h264Encoder != null)
             {
                 for (int i = 0; i < EncoderSelector.Items.Count; i++)
@@ -475,6 +463,7 @@ namespace ReMux2
                 EncoderSelector.SelectedIndex = 1; // libx264
             }
         }
+
         private void SelectFfmpeg_Click(object sender, RoutedEventArgs e)
         {
             var openFileDialog = new OpenFileDialog
@@ -482,9 +471,10 @@ namespace ReMux2
                 Filter = "FFmpeg Executable (ffmpeg.exe)|ffmpeg.exe"
             };
 
-            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (openFileDialog.ShowDialog() == true)
             {
                 _viewModel.FfmpegPath = openFileDialog.FileName;
+                _viewModel.IsFfmpegAvailable = true;
             }
         }
     }
