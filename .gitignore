@@ -1,0 +1,11 @@
+ffmpeg.exe
+ffprobe.exe
+ffplay.exe
+build_release_and_installer.bat
+.vs/
+bin/
+dist-installer/
+dist/
+.vscode/
+obj/
+properties/

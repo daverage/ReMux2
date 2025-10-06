@@ -1,0 +1,196 @@
+<Window x:Class="ReMux2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ReMux2"
+        mc:Ignorable="d"
+        Title="ReMux2"
+        Height="600" Width="800"
+        Loaded="MainWindow_Loaded"
+        Closing="MainWindow_Closing">
+
+    <Window.Resources>
+        <!-- Revert: remove custom styles to restore default WPF look -->
+        <SolidColorBrush x:Key="BackgroundBrush" Color="White"/>
+        <SolidColorBrush x:Key="ForegroundBrush" Color="Black"/>
+        <SolidColorBrush x:Key="BorderBrush" Color="#FFCCCCCC"/>
+    </Window.Resources>
+
+    <Grid Background="{StaticResource BackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#FF333333" Padding="10">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="5">
+                        <Label Content="Mode" Foreground="White"/>
+                        <ComboBox x:Name="ModeSelector" SelectedIndex="{Binding ModeSelectedIndex, Mode=TwoWay}" SelectionChanged="ModeSelector_SelectionChanged">
+                            <ComboBoxItem Content="Extract Audio"/>
+                            <ComboBoxItem Content="Remux Audio"/>
+                            <ComboBoxItem Content="YouTube Optimize"/>
+                            <ComboBoxItem Content="Yify Reencode"/>
+                            <ComboBoxItem Content="Custom Encode"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Margin="5">
+                        <Label Content="Preset" Foreground="White"/>
+                        <ComboBox x:Name="PresetSelector" SelectedIndex="{Binding PresetSelectedIndex, Mode=TwoWay}">
+                            <ComboBoxItem Content="ultrafast"/>
+                            <ComboBoxItem Content="superfast"/>
+                            <ComboBoxItem Content="veryfast"/>
+                            <ComboBoxItem Content="faster"/>
+                            <ComboBoxItem Content="fast"/>
+                            <ComboBoxItem Content="medium"/>
+                            <ComboBoxItem Content="slow"/>
+                            <ComboBoxItem Content="slower"/>
+                            <ComboBoxItem Content="veryslow"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" Margin="5">
+                        <Label Content="Encoder" Foreground="White"/>
+                        <ComboBox x:Name="EncoderSelector" SelectionChanged="EncoderSelector_SelectionChanged" SelectedIndex="{Binding EncoderSelectedIndex, Mode=TwoWay}">
+                            <ComboBoxItem Content="Auto"/>
+                            <ComboBoxItem Content="libx264"/>
+                            <ComboBoxItem Content="libx265"/>
+                            <ComboBoxItem Content="h264_nvenc"/>
+                            <ComboBoxItem Content="hevc_nvenc"/>
+                            <ComboBoxItem Content="h264_amf"/>
+                            <ComboBoxItem Content="hevc_amf"/>
+                            <ComboBoxItem Content="h264_qsv"/>
+                            <ComboBoxItem Content="hevc_qsv"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="3" Margin="5">
+                        <Label Content="Container" Foreground="White"/>
+                        <ComboBox x:Name="ContainerSelector" SelectedIndex="{Binding ContainerSelectedIndex, Mode=TwoWay}">
+                            <ComboBoxItem Content="mkv"/>
+                            <ComboBoxItem Content="mp4"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="4" Margin="5">
+                        <Label Content="Priority" Foreground="White"/>
+                        <ComboBox x:Name="PrioritySelector" SelectedIndex="{Binding PrioritySelectedIndex, Mode=TwoWay}" SelectionChanged="PrioritySelector_SelectionChanged">
+                            <ComboBoxItem Content="Idle"/>
+                            <ComboBoxItem Content="BelowNormal"/>
+                            <ComboBoxItem Content="Normal"/>
+                            <ComboBoxItem Content="AboveNormal"/>
+                            <ComboBoxItem Content="High"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="5" Margin="5">
+                        <Label x:Name="AudioCodecTextBlock" Content="Audio Codec" Foreground="White"/>
+                        <ComboBox x:Name="AudioCodecSelector" SelectedIndex="{Binding AudioCodecSelectedIndex, Mode=TwoWay}">
+                            <ComboBoxItem Content="aac"/>
+                            <ComboBoxItem Content="mp3"/>
+                            <ComboBoxItem Content="wav"/>
+                            <ComboBoxItem Content="flac"/>
+                        </ComboBox>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Video Input -->
+                <Border Grid.Row="0" AllowDrop="True" Background="#F0F0F0" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="4" DragEnter="Input_DragEnter" DragLeave="Input_DragLeave" Drop="VideoPath_Drop">
+                    <Grid AllowDrop="True" DragEnter="Input_DragEnter" DragLeave="Input_DragLeave" Drop="VideoPath_Drop">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Video Input (Drag &amp; Drop)" Grid.Column="0"/>
+                        <TextBox x:Name="VideoInput" Grid.Column="1" IsReadOnly="True" Text="{Binding VideoPath, Mode=TwoWay}" AllowDrop="True"/>
+                        <Button Content="..." Grid.Column="2" Click="SelectVideo_Click"/>
+                    </Grid>
+                </Border>
+
+                <!-- Audio Input -->
+                <Border Grid.Row="1" AllowDrop="True" Background="#F0F0F0" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="4" DragEnter="Input_DragEnter" DragLeave="Input_DragLeave" Drop="AudioPath_Drop">
+                    <Grid AllowDrop="True" DragEnter="Input_DragEnter" DragLeave="Input_DragLeave" Drop="AudioPath_Drop">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Audio Input (Drag &amp; Drop)" Grid.Column="0"/>
+                        <TextBox x:Name="AudioInput" Grid.Column="1" IsReadOnly="True" Text="{Binding AudioPath, Mode=TwoWay}" AllowDrop="True"/>
+                        <Button Content="..." Grid.Column="2" Click="SelectAudio_Click"/>
+                    </Grid>
+                </Border>
+
+                <!-- FFmpeg Location -->
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="FFmpeg Location" Grid.Column="0"/>
+                    <TextBox x:Name="FfmpegLocation" Grid.Column="1" IsReadOnly="True" Text="{Binding FfmpegPath, Mode=TwoWay}"/>
+                    <Button Content="..." Grid.Column="2" Click="SelectFfmpeg_Click"/>
+                </Grid>
+
+                <!-- Log Output -->
+                <TextBox x:Name="LogOutput" Grid.Row="3" IsReadOnly="True" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" Margin="5,10,5,5" TextChanged="LogOutput_TextChanged" Text="{Binding LogText, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+        </Grid>
+
+        <!-- Footer -->
+        <Grid Grid.Row="2" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <ProgressBar x:Name="ProgressBar" Value="{Binding Progress, Mode=OneWay}" Margin="0,0,10,0"/>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Button Content="Start" Click="StartButton_Click" IsEnabled="{Binding IsNotEncoding}"/>
+                <Button Content="Stop" Click="StopButton_Click" IsEnabled="{Binding IsEncoding}"/>
+                <Button x:Name="PauseResumeButton" Content="Pause" Click="PauseResumeButton_Click" IsEnabled="{Binding IsEncoding}"/>
+                <TextBlock Text="{Binding Eta, StringFormat=ETA: {0}}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+        <!-- Help Popup -->
+        <Popup x:Name="HelpPopup" IsOpen="False" Placement="Mouse" AllowsTransparency="True">
+            <Border Background="#FF2d2d2d" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Padding="10" CornerRadius="3">
+                <TextBlock Text="Drag and drop video/audio files, select encoder and options, then click Start."
+                           Foreground="{StaticResource ForegroundBrush}"/>
+            </Border>
+        </Popup>
+    </Grid>
+</Window>

@@ -1,0 +1,203 @@
+﻿2025-10-03 00:32:31.591   Log opened. (Time zone: UTC+01:00)
+2025-10-03 00:32:31.591   Setup version: Inno Setup version 6.5.4
+2025-10-03 00:32:31.591   Original Setup EXE: D:\GitHub\ReMux2\dist-installer\ReMux2Installer.exe
+2025-10-03 00:32:31.591   Setup command line: /SL5="$2A159A,44048645,882176,D:\GitHub\ReMux2\dist-installer\ReMux2Installer.exe" /SPAWNWND=$1200F2 /NOTIFYWND=$C902EC 
+2025-10-03 00:32:31.591   Windows version: 10.0.22000
+2025-10-03 00:32:31.591   Windows architecture: x64 (64-bit)
+2025-10-03 00:32:31.591   Machine types supported by system: x86 x64
+2025-10-03 00:32:31.591   User privileges: Administrative
+2025-10-03 00:32:31.595   Administrative install mode: Yes
+2025-10-03 00:32:31.595   Install mode root key: HKEY_LOCAL_MACHINE
+2025-10-03 00:32:31.595   64-bit install mode: Yes
+2025-10-03 00:32:31.596   Created protected temporary directory: C:\Users\ANDRZE~1\AppData\Local\Temp\is-BKANG.tmp
+2025-10-03 00:32:31.598   -- DLL function import --
+2025-10-03 00:32:31.598   Function and DLL name: URLDownloadToFileA@urlmon.dll
+2025-10-03 00:32:31.598   Importing the DLL function. Dest DLL name: urlmon.dll
+2025-10-03 00:32:31.599   Successfully imported the DLL function. Delay loaded? No
+2025-10-03 00:32:40.226   Found 393 files to register with RestartManager.
+2025-10-03 00:32:40.226   Calling RestartManager's RmGetList.
+2025-10-03 00:32:40.308   RmGetList finished successfully.
+2025-10-03 00:32:40.308   RestartManager found no applications using one of our files.
+2025-10-03 00:32:40.330   Starting FFmpeg download from: https://www.gyan.dev/ffmpeg/builds/ffmpeg-master-latest-win64-gpl.zip
+2025-10-03 00:32:40.331   URLDownloadToFile failed; attempting PowerShell download fallback.
+2025-10-03 00:32:42.504   Initial FFmpeg download attempt failed, retrying once...
+2025-10-03 00:32:42.504   URLDownloadToFile failed; attempting PowerShell download fallback.
+2025-10-03 00:32:44.448   Primary URL failed twice; attempting alternate URL: https://www.gyan.dev/ffmpeg/builds/ffmpeg-master-latest-win64-gpl.zip
+2025-10-03 00:32:44.448   URLDownloadToFile failed; attempting PowerShell download fallback.
+2025-10-03 00:32:46.235   Message box (OK):
+                          Failed to download FFmpeg from both primary and alternate URLs.
+                          Please check your internet connection or download it manually from:
+                          https://www.gyan.dev/ffmpeg/builds/ (Essentials zip).
+2025-10-03 00:32:47.894   User chose OK.
+2025-10-03 00:32:47.894   Starting the installation process.
+2025-10-03 00:32:47.896   Directory for uninstall files: C:\Program Files\ReMux2
+2025-10-03 00:32:47.896   Will append to existing uninstall log: C:\Program Files\ReMux2\unins000.dat
+2025-10-03 00:32:47.897   -- File entry --
+2025-10-03 00:32:47.897   Dest filename: C:\Program Files\ReMux2\unins000.exe
+2025-10-03 00:32:47.897   Non-default bitness: 32-bit
+2025-10-03 00:32:47.898   Time stamp of our file: 2025-10-03 00:32:31.526
+2025-10-03 00:32:47.899   Dest file exists.
+2025-10-03 00:32:47.899   Time stamp of existing file: 2025-10-03 00:16:23.857
+2025-10-03 00:32:47.899   Version of our file: 51.1052.0.0
+2025-10-03 00:32:47.899   Version of existing file: 51.1052.0.0
+2025-10-03 00:32:47.899   Installing the file.
+2025-10-03 00:32:47.903   Leaving temporary file in place for now.
+2025-10-03 00:32:47.903   -- File entry --
+2025-10-03 00:32:47.903   Dest filename: C:\Program Files\ReMux2\Accessibility.dll
+2025-10-03 00:32:47.903   Time stamp of our file: 2025-08-20 06:25:12.000
+2025-10-03 00:32:47.903   Dest file exists.
+2025-10-03 00:32:47.903   Time stamp of existing file: 2025-08-20 06:25:12.000
+2025-10-03 00:32:47.903   Installing the file.
+2025-10-03 00:32:47.905   Successfully installed the file.
+2025-10-03 00:32:47.905   -- File entry --
+2025-10-03 00:32:47.905   Dest filename: C:\Program Files\ReMux2\clretwrc.dll
+2025-10-03 00:32:47.905   Time stamp of our file: 2025-08-19 23:12:52.000
+2025-10-03 00:32:47.905   Dest file exists.
+2025-10-03 00:32:47.905   Time stamp of existing file: 2025-08-19 23:12:52.000
+2025-10-03 00:32:47.905   Installing the file.
+2025-10-03 00:32:47.911   Successfully installed the file.
+2025-10-03 00:32:47.911   -- File entry --
+2025-10-03 00:32:47.912   Dest filename: C:\Program Files\ReMux2\clrgc.dll
+2025-10-03 00:32:47.912   Time stamp of our file: 2025-08-19 23:10:30.000
+2025-10-03 00:32:47.912   Dest file exists.
+2025-10-03 00:32:47.912   Time stamp of existing file: 2025-08-19 23:10:30.000
+2025-10-03 00:32:47.912   Installing the file.
+2025-10-03 00:32:47.931   Successfully installed the file.
+2025-10-03 00:32:47.932   -- File entry --
+2025-10-03 00:32:47.932   Dest filename: C:\Program Files\ReMux2\clrgcexp.dll
+2025-10-03 00:32:47.932   Time stamp of our file: 2025-08-19 23:10:30.000
+2025-10-03 00:32:47.932   Dest file exists.
+2025-10-03 00:32:47.932   Time stamp of existing file: 2025-08-19 23:10:30.000
+2025-10-03 00:32:47.932   Installing the file.
+2025-10-03 00:32:47.946   Successfully installed the file.
+2025-10-03 00:32:47.946   -- File entry --
+2025-10-03 00:32:47.947   Dest filename: C:\Program Files\ReMux2\clrjit.dll
+2025-10-03 00:32:47.947   Time stamp of our file: 2025-08-19 23:09:36.000
+2025-10-03 00:32:47.947   Dest file exists.
+2025-10-03 00:32:47.947   Time stamp of existing file: 2025-08-19 23:09:36.000
+2025-10-03 00:32:47.947   Installing the file.
+2025-10-03 00:32:48.013   Successfully installed the file.
+2025-10-03 00:32:48.013   -- File entry --
+2025-10-03 00:32:48.013   Dest filename: C:\Program Files\ReMux2\coreclr.dll
+2025-10-03 00:32:48.013   Time stamp of our file: 2025-08-19 23:07:06.000
+2025-10-03 00:32:48.013   Dest file exists.
+2025-10-03 00:32:48.013   Time stamp of existing file: 2025-08-19 23:07:06.000
+2025-10-03 00:32:48.013   Installing the file.
+2025-10-03 00:32:48.154   Successfully installed the file.
+2025-10-03 00:32:48.155   -- File entry --
+2025-10-03 00:32:48.155   Dest filename: C:\Program Files\ReMux2\createdump.exe
+2025-10-03 00:32:48.155   Time stamp of our file: 2025-08-19 23:12:52.000
+2025-10-03 00:32:48.155   Dest file exists.
+2025-10-03 00:32:48.155   Time stamp of existing file: 2025-08-19 23:12:52.000
+2025-10-03 00:32:48.155   Installing the file.
+2025-10-03 00:32:48.158   Successfully installed the file.
+2025-10-03 00:32:48.158   -- File entry --
+2025-10-03 00:32:48.158   Dest filename: C:\Program Files\ReMux2\D3DCompiler_47_cor3.dll
+2025-10-03 00:32:48.158   Time stamp of our file: 2024-02-21 13:59:56.000
+2025-10-03 00:32:48.158   Dest file exists.
+2025-10-03 00:32:48.158   Time stamp of existing file: 2024-02-21 13:59:56.000
+2025-10-03 00:32:48.158   Installing the file.
+2025-10-03 00:32:48.320   Successfully installed the file.
+2025-10-03 00:32:48.321   -- File entry --
+2025-10-03 00:32:48.321   Dest filename: C:\Program Files\ReMux2\DirectWriteForwarder.dll
+2025-10-03 00:32:48.321   Time stamp of our file: 2025-08-21 21:10:12.000
+2025-10-03 00:32:48.321   Dest file exists.
+2025-10-03 00:32:48.321   Time stamp of existing file: 2025-08-21 21:10:12.000
+2025-10-03 00:32:48.321   Installing the file.
+2025-10-03 00:32:48.338   Successfully installed the file.
+2025-10-03 00:32:48.338   -- File entry --
+2025-10-03 00:32:48.338   Dest filename: C:\Program Files\ReMux2\hostfxr.dll
+2025-10-03 00:32:48.338   Time stamp of our file: 2025-08-19 23:22:42.000
+2025-10-03 00:32:48.338   Dest file exists.
+2025-10-03 00:32:48.338   Time stamp of existing file: 2025-08-19 23:22:42.000
+2025-10-03 00:32:48.338   Installing the file.
+2025-10-03 00:32:48.350   Successfully installed the file.
+2025-10-03 00:32:48.350   -- File entry --
+2025-10-03 00:32:48.350   Dest filename: C:\Program Files\ReMux2\hostpolicy.dll
+2025-10-03 00:32:48.350   Time stamp of our file: 2025-08-19 23:22:46.000
+2025-10-03 00:32:48.350   Dest file exists.
+2025-10-03 00:32:48.350   Time stamp of existing file: 2025-08-19 23:22:46.000
+2025-10-03 00:32:48.350   Installing the file.
+2025-10-03 00:32:48.360   Successfully installed the file.
+2025-10-03 00:32:48.360   -- File entry --
+2025-10-03 00:32:48.360   Dest filename: C:\Program Files\ReMux2\Microsoft.CSharp.dll
+2025-10-03 00:32:48.360   Time stamp of our file: 2025-08-19 23:31:40.000
+2025-10-03 00:32:48.360   Dest file exists.
+2025-10-03 00:32:48.360   Time stamp of existing file: 2025-08-19 23:31:40.000
+2025-10-03 00:32:48.360   Installing the file.
+2025-10-03 00:32:48.395   Successfully installed the file.
+2025-10-03 00:32:48.395   -- File entry --
+2025-10-03 00:32:48.396   Dest filename: C:\Program Files\ReMux2\Microsoft.DiaSymReader.Native.amd64.dll
+2025-10-03 00:32:48.396   Time stamp of our file: 2024-11-27 05:18:14.000
+2025-10-03 00:32:48.396   Dest file exists.
+2025-10-03 00:32:48.396   Time stamp of existing file: 2024-11-27 05:18:14.000
+2025-10-03 00:32:48.396   Installing the file.
+2025-10-03 00:32:48.459   Successfully installed the file.
+2025-10-03 00:32:48.460   -- File entry --
+2025-10-03 00:32:48.460   Dest filename: C:\Program Files\ReMux2\Microsoft.VisualBasic.Core.dll
+2025-10-03 00:32:48.460   Time stamp of our file: 2025-08-19 23:31:42.000
+2025-10-03 00:32:48.460   Dest file exists.
+2025-10-03 00:32:48.460   Time stamp of existing file: 2025-08-19 23:31:42.000
+2025-10-03 00:32:48.460   Installing the file.
+2025-10-03 00:32:48.508   Successfully installed the file.
+2025-10-03 00:32:48.508   -- File entry --
+2025-10-03 00:32:48.509   Dest filename: C:\Program Files\ReMux2\Microsoft.VisualBasic.dll
+2025-10-03 00:32:48.509   Time stamp of our file: 2025-08-19 23:27:36.000
+2025-10-03 00:32:48.509   Dest file exists.
+2025-10-03 00:32:48.509   Time stamp of existing file: 2025-08-19 23:27:36.000
+2025-10-03 00:32:48.509   Installing the file.
+2025-10-03 00:32:48.510   Successfully installed the file.
+2025-10-03 00:32:48.510   -- File entry --
+2025-10-03 00:32:48.510   Dest filename: C:\Program Files\ReMux2\Microsoft.Win32.Primitives.dll
+2025-10-03 00:32:48.511   Time stamp of our file: 2025-08-19 23:26:26.000
+2025-10-03 00:32:48.511   Dest file exists.
+2025-10-03 00:32:48.511   Time stamp of existing file: 2025-08-19 23:26:26.000
+2025-10-03 00:32:48.511   Installing the file.
+2025-10-03 00:32:48.512   Successfully installed the file.
+2025-10-03 00:32:48.512   -- File entry --
+2025-10-03 00:32:48.512   Dest filename: C:\Program Files\ReMux2\Microsoft.Win32.Registry.AccessControl.dll
+2025-10-03 00:32:48.512   Time stamp of our file: 2025-08-21 21:10:00.000
+2025-10-03 00:32:48.512   Dest file exists.
+2025-10-03 00:32:48.512   Time stamp of existing file: 2025-08-21 21:10:00.000
+2025-10-03 00:32:48.512   Installing the file.
+2025-10-03 00:32:48.514   Successfully installed the file.
+2025-10-03 00:32:48.514   -- File entry --
+2025-10-03 00:32:48.514   Dest filename: C:\Program Files\ReMux2\Microsoft.Win32.Registry.dll
+2025-10-03 00:32:48.514   Time stamp of our file: 2025-08-19 23:31:42.000
+2025-10-03 00:32:48.514   Dest file exists.
+2025-10-03 00:32:48.514   Time stamp of existing file: 2025-08-19 23:31:42.000
+2025-10-03 00:32:48.514   Installing the file.
+2025-10-03 00:32:48.518   Successfully installed the file.
+2025-10-03 00:32:48.518   -- File entry --
+2025-10-03 00:32:48.519   Dest filename: C:\Program Files\ReMux2\Microsoft.Win32.SystemEvents.dll
+2025-10-03 00:32:48.519   Time stamp of our file: 2025-08-21 21:10:00.000
+2025-10-03 00:32:48.519   Dest file exists.
+2025-10-03 00:32:48.519   Time stamp of existing file: 2025-08-21 21:10:00.000
+2025-10-03 00:32:48.519   Installing the file.
+2025-10-03 00:32:48.523   Successfully installed the file.
+2025-10-03 00:32:48.523   -- File entry --
+2025-10-03 00:32:48.524   Dest filename: C:\Program Files\ReMux2\mscordaccore.dll
+2025-10-03 00:32:48.524   Time stamp of our file: 2025-08-19 23:15:38.000
+2025-10-03 00:32:48.524   Dest file exists.
+2025-10-03 00:32:48.524   Time stamp of existing file: 2025-08-19 23:15:38.000
+2025-10-03 00:32:48.524   Installing the file.
+2025-10-03 00:32:48.564   Successfully installed the file.
+2025-10-03 00:32:48.564   -- File entry --
+2025-10-03 00:32:48.565   Dest filename: C:\Program Files\ReMux2\mscordaccore_amd64_amd64_9.0.925.41916.dll
+2025-10-03 00:32:48.565   Time stamp of our file: 2025-08-19 23:15:38.000
+2025-10-03 00:32:48.565   Dest file exists.
+2025-10-03 00:32:48.565   Time stamp of existing file: 2025-08-19 23:15:38.000
+2025-10-03 00:32:48.565   Installing the file.
+2025-10-03 00:32:48.581   Successfully installed the file.
+2025-10-03 00:32:48.581   -- File entry --
+2025-10-03 00:32:48.581   Dest filename: C:\Program Files\ReMux2\mscordbi.dll
+2025-10-03 00:32:48.581   Time stamp of our file: 2025-08-19 23:15:38.000
+2025-10-03 00:32:48.581   Dest file exists.
+2025-10-03 00:32:48.581   Time stamp of existing file: 2025-08-19 23:15:38.000
+2025-10-03 00:32:48.581   Installing the file.
+2025-10-03 00:32:48.598   Message box (Yes/No):
+                          Setup is not complete. If you exit now, the program will not be installed.
+                          
+                          You may run Setup again at another time to complete the installation.
+                          
+                          Exit Setup?
