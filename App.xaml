@@ -70,7 +70,7 @@
                 <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
                 <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
                 <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
-                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="ComboBox">
@@ -106,7 +106,7 @@
                                                   HorizontalAlignment="Left">
                                     <ContentPresenter.Resources>
                                         <Style TargetType="TextBlock">
-                                            <Setter Property="Foreground" Value="Black"/>
+                                            <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
                                         </Style>
                                     </ContentPresenter.Resources>
                                 </ContentPresenter>
@@ -118,7 +118,7 @@
                                          Margin="{TemplateBinding Padding}"
                                          Focusable="True"
                                          Background="Transparent"
-                                         Foreground="Black"
+                                         Foreground="{StaticResource ForegroundBrush}"
                                          Visibility="Hidden"
                                          IsReadOnly="{TemplateBinding IsReadOnly}"/>
 
@@ -196,6 +196,26 @@
             <Style TargetType="Window">
                 <Setter Property="Background" Value="{StaticResource PanelBrush}"/>
                 <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
+            </Style>
+            <Style x:Key="CloseButton" TargetType="Button">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Padding" Value="10,5"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FFC00000"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
             </Style>
         </ResourceDictionary>
     </Application.Resources>

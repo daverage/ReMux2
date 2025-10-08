@@ -41,9 +41,32 @@ namespace ReMux2
 
         public bool IsPaused { get => _isPaused; set => SetProperty(ref _isPaused, value); }
 
-        public string VideoPath { get => _videoPath; set => SetProperty(ref _videoPath, value); }
+        public string VideoPath
+        {
+            get => _videoPath;
+            set
+            {
+                if (SetProperty(ref _videoPath, value))
+                {
+                    OnPropertyChanged(nameof(VideoFileName));
+                }
+            }
+        }
 
-        public string AudioPath { get => _audioPath; set => SetProperty(ref _audioPath, value); }
+        public string AudioPath
+        {
+            get => _audioPath;
+            set
+            {
+                if (SetProperty(ref _audioPath, value))
+                {
+                    OnPropertyChanged(nameof(AudioFileName));
+                }
+            }
+        }
+
+        public string VideoFileName => string.IsNullOrEmpty(VideoPath) ? "Drop Video File Here" : System.IO.Path.GetFileName(VideoPath);
+        public string AudioFileName => string.IsNullOrEmpty(AudioPath) ? "Drop Audio File Here" : System.IO.Path.GetFileName(AudioPath);
 
         public string FfmpegPath { get => _ffmpegPath; set => SetProperty(ref _ffmpegPath, value); }
 
