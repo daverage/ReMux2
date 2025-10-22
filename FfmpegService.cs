@@ -308,11 +308,12 @@ namespace ReMux2
 
         // Process management
         private Process? _ffmpegProcess;
+        private string? _currentOutputPath;
         public Action<string>? Logger { get; set; }
         public Action<double>? ProgressUpdater { get; set; }
         public Action<string>? EtaSetter { get; set; }
         public Action<bool>? UiStateSetter { get; set; }
-        public Action? ProcessCompleted { get; set; }
+        public Action<string?>? ProcessCompleted { get; set; }
 
         public void SetFfmpegPath(string path)
         {
@@ -320,8 +321,10 @@ namespace ReMux2
             EncodersProbed = false;
         }
 
-        public void StartProcess(string ffmpegPath, string args, double duration, ProcessPriorityClass priority)
+        public void StartProcess(string ffmpegPath, string args, double duration, ProcessPriorityClass priority, string? outputPath = null)
         {
+            _currentOutputPath = outputPath;
+            
             var psi = new ProcessStartInfo
             {
                 FileName = ffmpegPath,
@@ -418,7 +421,7 @@ namespace ReMux2
             }
 
             UiStateSetter?.Invoke(false);
-            ProcessCompleted?.Invoke();
+            ProcessCompleted?.Invoke(_currentOutputPath);
         }
 
         [Flags]

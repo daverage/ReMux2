@@ -39,12 +39,23 @@ namespace ReMux2
             _ffmpegService.ProcessCompleted = OnProcessCompleted;
         }
 
-        private void OnProcessCompleted()
+        private void OnProcessCompleted(string? outputPath)
         {
             Dispatcher.Invoke(() =>
             {
+                _viewModel.IsEncoding = false;
+                _viewModel.IsPaused = false;
+                PauseResumeButton.Content = "Pause";
                 _viewModel.Progress = 100;
-                Log("Process finished.\n");
+                Log("Process completed.\n");
+                
+                // Show completion popup with option to open containing folder
+                if (!string.IsNullOrEmpty(outputPath))
+                {
+                    var dialog = new ProcessCompletedDialog(outputPath);
+                    dialog.Owner = this;
+                    dialog.ShowDialog();
+                }
             });
         }
 
@@ -216,7 +227,7 @@ namespace ReMux2
             var priority = (ProcessPriorityClass)Enum.Parse(typeof(ProcessPriorityClass),
                 (PrioritySelector.SelectedItem as ComboBoxItem)?.Content as string ?? "Normal", true);
 
-            _ffmpegService.StartProcess(ffmpegPath, arguments, duration, priority);
+            _ffmpegService.StartProcess(ffmpegPath, arguments, duration, priority, outputPath);
         }
 
         private void StopButton_Click(object sender, RoutedEventArgs e)
